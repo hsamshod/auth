@@ -1,0 +1,10 @@
+[app]
+locale=ru
+encrypt=AES-128-CBC
+key=16LengthSometext
+
+[db]
+host=
+name=
+user=
+pass=

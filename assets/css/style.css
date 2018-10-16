@@ -1,0 +1,27 @@
+.mt-100px {
+    margin-top: 100px;
+}
+.button-like:not(.active) {
+    cursor: pointer;
+}
+.border-bottom-bold {
+    border-bottom-width: 2px!important;
+}
+
+#auth-page .custom-file-label,
+#auth-page .custom-file-label::after {
+    height: auto;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+#auth-page .custom-file-input {
+    height: calc(2rem + 2px);
+}
+.invalid-feedback {
+    display: block;
+}
+
+#locales .nav-item .active {
+    color: #aaa!important;
+}

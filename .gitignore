@@ -1,0 +1,5 @@
+.idea
+config.ini
+store/*
+!store/default.png
+logs/
