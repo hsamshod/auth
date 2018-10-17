@@ -1,7 +1,16 @@
 <?php
 
+/**
+ * Class Controller
+ * Controller handles all requests and calls corresponding action.
+ */
 class Controller
 {
+    /**
+     * Handles all application requests.
+     *
+     * @return Response     Action response.
+     */
     public function handle()
     {
         Request::runMiddlewares();
@@ -14,11 +23,23 @@ class Controller
         }
     }
 
+    /**
+     * Renders auth page.
+     *
+     * @return Response
+     */
     public function auth()
     {
         return new Response('auth', ['active_tab' => 'login']);
     }
 
+    /**
+     * Authenticates user with login, password.
+     * If successful, redirects to user profile.
+     * Otherwise renders form with errors.
+     *
+     * @return Response
+     */
     public function login()
     {
         $params = Request::getParams('post', 'login');
@@ -32,6 +53,13 @@ class Controller
         ]);
     }
 
+    /**
+     * Registers user.
+     * If successful, redirects to user profile.
+     * Otherwise renders form with errors.
+     *
+     * @return Response
+     */
     public function register()
     {
         $params = Request::getParams('post', 'register');
@@ -46,6 +74,11 @@ class Controller
         ]);
     }
 
+    /**
+     * Renders user profile.
+     *
+     * @return Response
+     */
     public function profile()
     {
         if (app()->user()->isGuest()) {
@@ -57,6 +90,11 @@ class Controller
         ]);
     }
 
+    /**
+     * Logs out user.
+     *
+     * @return Response
+     */
     public function logout()
     {
         if (Request::isPost()) {
@@ -68,11 +106,19 @@ class Controller
         return new Response('404');
     }
 
+    /**
+     * Renders 404 page.
+     *
+     * @return Response
+     */
     public function notFound()
     {
         return new Response('404');
     }
 
+    /**
+     * Sets application locale settings.
+     */
     public function locale()
     {
         if (in_array($locale = Request::getParams('get', 'lang'), app()::LOCALES)) {

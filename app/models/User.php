@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class User.
+ *
+ * Represents application user.
+ */
 class User
 {
     private $_attributes = [];
@@ -14,11 +19,19 @@ class User
         return isset($this->_attributes[$field]) ? $this->_attributes[$field] : null;
     }
 
+    /**
+     * Determines if user is logged in or guest user.
+     *
+     * @return bool
+     */
     public function isGuest()
     {
         return !$this->id;
     }
 
+    /**
+     * Restores user from session or cookie data.
+     */
     public function restore()
     {
         if (isset($_SESSION['auth']) && (Request::getCookie('_token') && Request::getCookie('_token') === $_SESSION['auth']['_token'])) {
@@ -36,6 +49,13 @@ class User
         }
     }
 
+    /**
+     * Logins user based on login|password pair.
+     *
+     * @param array $params     User auth data.
+     *
+     * @return bool     Whether the user is successfully logged in.
+     */
     public function login($params)
     {
         $this->logout();
@@ -83,6 +103,13 @@ class User
         return false;
     }
 
+    /**
+     * Registers user.
+     *
+     * @param array $params     User data for registration.
+     *
+     * @return bool     Whether the user is successfully registered in application.
+     */
     public function register($params)
     {
         $this->logout();
@@ -119,7 +146,7 @@ class User
     }
 
     /**
-     * Sign out user
+     * Signs out the user.
      */
     public function logout()
     {
@@ -127,6 +154,9 @@ class User
         unset($_SESSION['auth']);
     }
 
+    /**
+     * Generate new auth tokens for user used for restoring user session.
+     */
     private function refreshTokens()
     {
         $token = random_string();
@@ -142,6 +172,13 @@ class User
         Request::setQueuedCookie('id', $this->id);
     }
 
+    /**
+     * Saves user photo.
+     *
+     * @param string $file_name     User photo path.
+     *
+     * @return bool     Whether photo is successfully updated.
+     */
     public function setPhoto($file_name)
     {
         return Db::update([

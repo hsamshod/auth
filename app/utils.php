@@ -6,11 +6,26 @@ function app()
     return $app;
 }
 
+/**
+ * Generates random string with specified length.
+ *
+ * @param int $length       String length.
+ *
+ * @return string           Generated string.
+ * @throws Exception
+ */
 function random_string($length = 16)
 {
     return bin2hex(random_bytes($length));
 }
 
+/**
+ * Two way data encryption.
+ *
+ * @param mixed $data   Data to be encrypted.
+ *
+ * @return string       Encrypted data.
+ */
 function encrypt($data)
 {
     $ivlen = openssl_cipher_iv_length(Config::get('app.encrypt'));
@@ -20,6 +35,14 @@ function encrypt($data)
     return base64_encode($iv . $hmac . $ciphertext_raw);
 }
 
+
+/**
+ * Two way encrypted data decryption.
+ *
+ * @param string $data   Encrypted data.
+ *
+ * @return mixed    Decrypted data.
+ */
 function decrypt($enc_data)
 {
     $c = base64_decode($enc_data);
@@ -45,9 +68,10 @@ function decrypt($enc_data)
 
 /**
  * Password hash generator.
- * Generates password hash
- * @param string $errorMsg error message
- * @return string generated markup
+ *
+ * @param string $string    Password to be hashed.
+ *
+ * @return string       Generated hash.
  */
 function get_password_hash($string)
 {
@@ -55,10 +79,11 @@ function get_password_hash($string)
 }
 
 /**
- * User password check
- * @param string $hash user password hash from db
- * @param string $password password from login form
- * @return bool whether the passwords are same
+ * Verifies password.
+ *
+ * @param string $hash      User entered password hash.
+ * @param string $password  Password hash from db.
+ * @return bool             Whether the passwords successfully verified.
  */
 function check_password_hash($password, $hash)
 {

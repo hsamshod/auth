@@ -23,6 +23,13 @@ class Config extends Singleton
         }
     }
 
+    /**
+     * Get key value from loaded config.
+     *
+     * @param string $key      Key which value should be returned.
+     *
+     * @return mixed    Value of key.
+     */
     private static function key($key)
     {
         $path = explode('.', $key);
@@ -42,11 +49,25 @@ class Config extends Singleton
         return $value;
     }
 
+    /**
+     * Get key value from loaded config.
+     *
+     * @param string $key   Key, which value is returned.
+     *
+     * @return mixed        Value of key.
+     */
     public static function get($key)
     {
         return static::inst()->key($key);
     }
 
+    /**
+     * Get values of multiple keys.
+     *
+     * @param array $keys   Keys, which values should be retrieved.
+     *
+     * @return array        Values of keys.
+     */
     public static function getList($keys)
     {
         if (! is_array($keys)) {

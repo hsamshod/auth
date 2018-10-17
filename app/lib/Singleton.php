@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class Singleton
+ * Abstract singleton class.
+ * Instances should have protected static field $_instance
+ */
 abstract class Singleton
 {
     protected function __construct()

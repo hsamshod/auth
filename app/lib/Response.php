@@ -1,9 +1,14 @@
 <?php
 
+/**
+ * Class Response.
+ * Response class is used to render application output to user browser.
+ */
 class Response
 {
     private $_view;
 
+    /* @var array $_data    View data */
     private $_data;
 
     const VIEWS_DIR = 'assets' . DIRECTORY_SEPARATOR . 'views';
@@ -14,11 +19,24 @@ class Response
         $this->_data = $data;
     }
 
+    /**
+     * Checks if response has view file to be rendered.
+     *
+     * @return bool
+     */
     private function isEmptyResponse()
     {
         return !$this->_view;
     }
 
+    /**
+     * Resolve view path.
+     *
+     * @param string $view_file     View file name.
+     * @param string $base          Base path to view file.
+     *
+     * @return mixed|null
+     */
     private function resolveView($view = null, $base = null)
     {
         $templates = [];
@@ -47,6 +65,9 @@ class Response
         return $found_view;
     }
 
+    /**
+     * Sends response to user browser.
+     */
     public function send()
     {
         Request::sendQueuedCookies();
@@ -77,11 +98,27 @@ class Response
         return ob_get_clean();
     }
 
+    /**
+     * Renders view content and returns generated html.
+     *
+     * @param string $view_file     View file name.
+     * @param string $base          Base path to view file.
+     *
+     * @return string       Generated output.
+     */
     public function renderPartial($view_file, $base)
     {
         return $this->render($this->resolveView($view_file, $base));
     }
 
+    /**
+     * Get error with specified key if it has.
+     *
+     * @param string $field     Field name which should be checked for existing error.
+     * @param string $error     Error type.
+     *
+     * @return bool     Whether app has specified error.
+     */
     public function e($field, $error = null)
     {
         $err = isset($this->_data['errors']) ? $this->_data['errors'] : null;

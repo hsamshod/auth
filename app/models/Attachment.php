@@ -1,11 +1,22 @@
 <?php
 
+/**
+ * Class Attachment.
+ */
 class Attachment
 {
     const FOLDER_PATH = 'store';
 
     const DEFAULT_PHOTO = 'default.png';
 
+    /**
+     * Creates attachment record and stores file.
+     *
+     * @param array $uploaded_file      Uploaded file info.
+     * @param string $key               Uploaded file key in $_FILES array.
+     *
+     * @return bool             Whether the file is successfully stored.
+     */
     public static function create($uploaded_file, $key)
     {
         if (Validator::validateUploadedPhoto($uploaded_file, $key)) {

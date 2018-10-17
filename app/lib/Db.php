@@ -1,13 +1,15 @@
 <?php
 
+/**
+ * Class Db.
+ * Establishes database connection and runs queries.
+ */
 class Db extends Singleton
 {
+    /* @var static $_instance   Class instance */
     protected static $_instance;
 
-    /**
-     * Holds db connection
-     * @var PDO
-     */
+    /* @var PDO $_db    PDO connection instance. */
     private static $_db;
 
     protected function __construct()
@@ -24,6 +26,8 @@ class Db extends Singleton
     }
 
     /**
+     * Get active database connection.
+     *
      * @return PDO
      */
     public static function conn()
@@ -31,15 +35,20 @@ class Db extends Singleton
         return (static::inst())::$_db;
     }
 
+    /**
+     * Close active database connection.
+     */
     public static function close()
     {
         static::$_db = null;
     }
 
     /**
-     * Query one record from db
-     * @param string $sql sql query
-     * @return
+     * Query one record from database.
+     *
+     * @param array $params     Query params.
+     *
+     * @return array|null       Query result if found. Null otherwise.
      */
     public static function queryOne($params)
     {
@@ -65,9 +74,11 @@ class Db extends Singleton
     }
 
     /**
-     * Query one record from db
-     * @param string $sql sql query
-     * @return
+     * Insert data.
+     *
+     * @param array $params     Record data to be stored.
+     *
+     * @return null|int         Id of created row. Null if record not saved.
      */
     public static function insert($params)
     {
@@ -94,9 +105,11 @@ class Db extends Singleton
 
 
     /**
-     * Query one record from db
-     * @param string $sql sql query
-     * @return
+     * Update record in database.
+     *
+     * @param array $params     Record data to be updated.
+     *
+     * @return bool     Record updating result.
      */
     public static function update($params)
     {
@@ -120,6 +133,16 @@ class Db extends Singleton
         }
     }
 
+    /**
+     * Prepares data for using in sql.
+     *
+     * @param array $params     Values to be wrapped.
+     * @param string $wrapper   Wrapper value.
+     *
+     * @return string   Built string.
+     *
+     * @example wrap([1,2,3], '"') => "1","2","3"
+     */
     private static function wrapWith($params, $wrapper = "'")
     {
         $values = '';
@@ -130,6 +153,15 @@ class Db extends Singleton
         return $values;
     }
 
+    /**
+     * Builds where condition for using in sql query.
+     *
+     * @param array $params   Key-value pairs used in condition.
+     *
+     * @return string       Build condition.
+     *
+     * @example ['id' => 2, 'name' => 'foo'] => where id = '2' and name = 'foo'.
+     */
     private static function buildCondition($params)
     {
         if (isset($params['where'])) {

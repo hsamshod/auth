@@ -1,11 +1,21 @@
 <?php
 
+/**
+ * Class Validator.
+ *
+ * Validates input data.
+ * Validating errors added in error bag.
+ */
 class Validator
 {
+    /* allowed image types */
     const IMAGE_TYPES = [IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG];
 
     const MAX_IMAGE_SIZE = 1024 * 1024 * 2; // 2mb
 
+    /**
+     * @var array $error_bag    Errors holder. Validation errors are collected in error_bag.
+     */
     private static $error_bag = [];
 
     public static $messages = [
@@ -36,25 +46,42 @@ class Validator
         ]
     ];
 
+    /**
+     * @return array    Errors list.
+     */
     public static function getErrors()
     {
         return static::$error_bag;
     }
 
+    /**
+     * Adds error into error bag.
+     *
+     * @param string $key    Error key.
+     * @param string $type   Error type.
+     */
     public static function addError($key, $type)
     {
         static::$error_bag[$key][$type] = static::msg($type);
     }
 
+    /**
+     * Gets error message.
+     *
+     * @param string $msg   Error type.
+     *
+     * @return string|null  Error message.
+     */
     public static function msg($msg)
     {
         return static::$messages[app()->getLocale()][$msg];
     }
 
     /**
-     * Validating user data for register
-     * @param array $params array with user username, password, email, birth date, sex
-     * @return bool is user data valid
+     * Validating user data for register.
+     * @param array $params array with user username, password, email, birth date, sex.
+     *
+     * @return bool is user data valid.
      */
     public static function validateRegisterForm($params)
     {
@@ -88,8 +115,9 @@ class Validator
     }
 
     /**
-     * Validating user data for login
-     * @param array $params array with user username, password, email, birth date, gender
+     * Validating user data for login.
+     * @param array $params array with user username, password, email, birth date, gender.
+     *
      * @return bool is user data valid
      */
     public static function validateLoginForm($params)
@@ -103,29 +131,52 @@ class Validator
         return true;
     }
 
+    /**
+     * @param string $string    String to be validated.
+     *
+     * @return bool             Result if value is valid alphanum.
+     */
     public static function alphanum($string)
     {
         $filtered = preg_replace('/[^a-zA-Z0-9_]/', '', $string);
         return strlen($filtered) && $string === $filtered;
     }
 
+
+    /**
+     * @param string $string    String to be validated.
+     * @param int $length       String length.
+     *
+     * @return bool             Result if string has valid length.
+     */
     public static function length($string, $length)
     {
         return is_string($string) && strlen($string) >= $length;
     }
 
     /**
-     * Date validation
-     * @param int $month user birth month
-     * @param int $day user birth day
-     * @param int $year user birth year
-     * @return bool whether birth date is valid
+     * Date validation.
+     *
+     * @param int $month    User birth month.
+     * @param int $day      User birth day.
+     * @param int $year     User birth year.
+     *
+     * @return bool         Whether birth date is valid.
      */
     public static function date($year, $month, $day)
     {
         return checkdate($month, $day, $year);
     }
 
+
+    /**
+     * Validates uploaded image format.
+     *
+     * @param array $uploaded_file    Uploaded file data.
+     * @param string $key             File field name in form.
+     *
+     * @return bool     Whether image format is allowed.
+     */
     public static function isPhoto($uploaded_file, $key)
     {
         if ($uploaded_file['error'][$key] === 0) {
@@ -135,6 +186,14 @@ class Validator
         return false;
     }
 
+    /**
+     * Validates if uploaded file is valid photo.
+     *
+     * @param array $uploaded_file    Uploaded file data.
+     * @param string $key             File field name in form.
+     *
+     * @return bool         Whether the file is valid photo.
+     */
     public static function validateUploadedPhoto($uploaded_photo, $key)
     {
         $valid = true;

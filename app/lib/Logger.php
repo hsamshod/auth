@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Class Logger
+ * Logger is user to log app errors, infos.
+ */
 class Logger extends Singleton
 {
     const LOG_FILE_PATH = 'logs/log.txt';
@@ -7,9 +11,7 @@ class Logger extends Singleton
     protected static $_instance;
 
     /**
-     * Log file resource
-     *
-     * @var SplFileObject
+     * @var SplFileObject $_file   Log file resource.
      */
     private static $_file;
 
@@ -34,7 +36,7 @@ class Logger extends Singleton
     /**
      * Writes application error to log file
      *
-     * @param string $msg error message
+     * @param string $msg   Error message.
      */
     public static function error($msg)
     {
@@ -51,8 +53,7 @@ class Logger extends Singleton
     /**
      * Writes application info to log file
      *
-     * @param string $msg info message
-     * @return void
+     * @param string $msg   Info message.
      */
     public static function info($msg)
     {
@@ -64,6 +65,7 @@ class Logger extends Singleton
     }
 
     /**
+     * Writes sting to log file.
      * @param string $msg String to write file
      */
     private static function write($msg)
